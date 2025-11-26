@@ -6,6 +6,11 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Boas vindass, {{name}}</h1>
+    <form method="POST">
+    {{form.hidden_tag()}}
+
+    {{form.first_name()}}
+    </form>
+    
 </body>
 </html>
