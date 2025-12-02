@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <form method="POST">
-    {{form.hidden_tag()}}
+<br>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.nome.label }} {{ form.nome() }}  </br>
+    {{ form.idade.label }} {{ form.idade() }}  </br>
+    {{ form.telefone.label }} {{ form.telefone() }}</br>
+    {{ form.submit() }}
+</form>
 
-    {{form.first_name()}}
-    </form>
     
 </body>
 </html>
