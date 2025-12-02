@@ -13,6 +13,8 @@ class RegisterForm(FlaskForm):
     telefone = StringField('telefone', validators=[DataRequired()])
     submit = SubmitField('CADASTRAR')
 
+# ABAIXO MOSTRO A ROTA DE CADASTRO
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -43,7 +45,21 @@ def register():
 
 
     
-    
+   #  ROTA PARA VER OS DADOS CADASTRADOS
+
+@app.route("/listar")
+def listar():
+    con = get_connection()     # usa sua conexão normal (MySQL)
+    cursor = con.cursor(dictionary=True)   # devolve dict em vez de tupla
+
+    cursor.execute("SELECT * FROM tb_cliente")
+    clientes = cursor.fetchall()
+
+    cursor.close()
+    con.close()
+
+    return render_template("tabela.html", clientes=clientes)
+
    
 
 # @app.route('/exemplo')
