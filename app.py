@@ -24,6 +24,7 @@ def register():
         nome = form.nome.data
         idade = form.idade.data
         telefone = form.telefone.data
+        
 
         con = get_connection()
         cursor = con.cursor()
@@ -181,4 +182,4 @@ def buscar():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5152)
+    app.run(debug=True, port=5151)
