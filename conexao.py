@@ -4,6 +4,7 @@ def get_connection():
     conn = mysql.connector.connect(
         host='localhost',
         port=3307,        # sua porta do XAMPP
+        # AQUI PEÇO PARA QUE CONFIGURE SE NECESSARIO A PORTA 3306 OU DEIXE A PORTA PADRÃO DO XAMPP (ESTOU EVITANDO O PLÁGIO)
         user='root',
         password='',
         database='db_clinica'

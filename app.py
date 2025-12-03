@@ -1,5 +1,5 @@
 from conexao import get_connection
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -37,7 +37,10 @@ def register():
         cursor.close()
         con.close()
 
-        return "Usuário cadastrado com sucesso!"
+        flash("Usuário cadastrado com sucesso!", "success")
+        return redirect(url_for('register'))
+        
+
 
     return render_template('register.html', form=form)
 
@@ -49,17 +52,98 @@ def register():
 
 @app.route("/listar")
 def listar():
-    con = get_connection()     # usa sua conexão normal (MySQL)
-    cursor = con.cursor(dictionary=True)   # devolve dict em vez de tupla
+    con = get_connection()
+    cursor = con.cursor(dictionary=True)
 
     cursor.execute("SELECT * FROM tb_cliente")
     clientes = cursor.fetchall()
 
+    # *** CÁLCULOS ***
+    total = len(clientes)
+
+    # idade média
+    if total > 0:
+        soma_idades = sum(int(c["idade"]) for c in clientes)
+        idade_media = soma_idades / total
+    else:
+        idade_media = 0
+
+    # mais novo
+    if total > 0:
+        mais_novo = min(clientes, key=lambda c: int(c["idade"]))
+        mais_velho = max(clientes, key=lambda c: int(c["idade"]))
+    else:
+        mais_novo = None
+        mais_velho = None
+
     cursor.close()
     con.close()
 
-    return render_template("tabela.html", clientes=clientes)
+    return render_template(
+        "tabela.html",
+        clientes=clientes,
+        total=total,
+        idade_media=idade_media,
+        mais_novo=mais_novo,
+        mais_velho=mais_velho
+    )
 
+
+    # ABAIXO ROTA DE EXCLUSÃO DE ELEMENTOS DA LISTA
+
+
+@app.route("/excluir/<int:id>", methods=["POST"])
+def excluir(id):
+    con = get_connection()
+    cursor = con.cursor()
+
+    cursor.execute("DELETE FROM tb_cliente WHERE id_cliente = %s", (id,))
+    con.commit()
+
+    cursor.close()
+    con.close()
+
+    return redirect("/listar")
+
+
+# BARRA DE PESQUISA
+@app.route("/buscar")
+def buscar():
+    nome = request.args.get("nome")
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM tb_cliente WHERE nome LIKE %s", (f"%{nome}%",))
+    resultados = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    # se quiser pode mostrar mensagem se não encontrar
+    if not resultados:
+        return render_template("tabela.html",
+                               clientes=[],
+                               mensagem="Nenhum paciente encontrado.",
+                               total=0,
+                               idade_media=0,
+                               mais_novo=None,
+                               mais_velho=None)
+
+    # Agora as estatísticas
+    idades = [r["idade"] for r in resultados]
+    total = len(resultados)
+    idade_media = sum(idades) / total
+
+    mais_novo = min(resultados, key=lambda x: x["idade"])
+    mais_velho = max(resultados, key=lambda x: x["idade"])
+
+    return render_template("tabela.html",
+                           clientes=resultados,
+                           total=total,
+                           idade_media=idade_media,
+                           mais_novo=mais_novo,
+                           mais_velho=mais_velho)
    
 
 # @app.route('/exemplo')

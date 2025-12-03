@@ -3,9 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Clínica Vida +</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #e9f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        form {
+            background: #ffffff;
+            padding: 30px;
+            width: 330px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+            border-top: 5px solid #1fa7a0;
+        }
+
+        form label {
+            font-weight: bold;
+            color: #177a75;
+        }
+
+        form input[type="text"],
+        form input[type="number"],
+        form input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 4px;
+            margin-bottom: 14px;
+            border: 1px solid #bcd9d7;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        form input[type="text"]:focus,
+        form input[type="number"]:focus,
+        form input[type="tel"]:focus {
+            border-color: #1fa7a0;
+            box-shadow: 0 0 5px rgba(31,167,160,0.4);
+        }
+
+        form input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: #1fa7a0;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        form input[type="submit"]:hover {
+            background: #177a75;
+        }
+
+        /* Botão para tabela */
+        .btn-tabela {
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #0f6d68;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-tabela:hover {
+            background: #0b4f4b;
+        }
+
+        /* Estilo da mensagem */
+        .alert-success {
+            background: #c5f7d0;
+            color: #176c2c;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            width: 330px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+
+    </style>
+
 </head>
-<br>
+
+<body>
+
+<!--  MENSAGEM DE SUCESSO -->
+{% with mensagens = get_flashed_messages(with_categories=true) %}
+  {% if mensagens %}
+    {% for categoria, msg in mensagens %}
+      <div class="alert-{{ categoria }}">
+        {{ msg }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<!-- FORMULÁRIO -->
 <form method="POST">
     {{ form.hidden_tag() }}
     {{ form.nome.label }} {{ form.nome() }}  </br>
@@ -14,6 +124,8 @@
     {{ form.submit() }}
 </form>
 
-    
+<!-- Botão para tabela de cadastrados -->
+<a class="btn-tabela" href="/listar">Ver clientes cadastrados</a>
+
 </body>
 </html>
