@@ -1,13 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de CEP</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .container{
+            background:white;
+            width:450px;
+            padding:30px;
+            border-radius:15px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        h1{
+            text-align:center;
+            color:#1e293b;
+            margin-bottom:25px;
+        }
+
+        .info{
+            margin-bottom:15px;
+            padding:12px;
+            background:#f1f5f9;
+            border-left:5px solid #2563eb;
+            border-radius:5px;
+        }
+
+        .label{
+            font-weight:bold;
+            color:#1e293b;
+        }
+
+        .valor{
+            color:#475569;
+        }
+
+        .btn{
+            display:block;
+            text-align:center;
+            text-decoration:none;
+            background:#2563eb;
+            color:white;
+            padding:12px;
+            border-radius:8px;
+            margin-top:20px;
+            transition:0.3s;
+        }
+
+        .btn:hover{
+            background:#1d4ed8;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Dados do CEP</h1>
+    <div class="container">
+        <h1>Dados do CEP</h1>
 
-    <p><strong>CEP:</strong> {{ dados.cep }}</p>
-    <p><strong>Rua:</strong> {{ dados.logradouro }}</p>
-    <p><strong>Bairro:</strong> {{ dados.bairro }}</p>
-    <p><strong>Cidade:</strong> {{ dados.localidade }}</p>
-    <p><strong>Estado:</strong> {{ dados.uf }}</p>
+        <div class="info">
+            <span class="label">CEP:</span>
+            <span class="valor">{{ dados.cep }}</span>
+        </div>
+
+        <div class="info">
+            <span class="label">Rua:</span>
+            <span class="valor">{{ dados.logradouro }}</span>
+        </div>
+
+        <div class="info">
+            <span class="label">Bairro:</span>
+            <span class="valor">{{ dados.bairro }}</span>
+        </div>
+
+        <div class="info">
+            <span class="label">Cidade:</span>
+            <span class="valor">{{ dados.localidade }}</span>
+        </div>
+
+        <div class="info">
+            <span class="label">Estado:</span>
+            <span class="valor">{{ dados.uf }}</span>
+        </div>
+
+        <a href="/" class="btn">Nova Consulta</a>
+    </div>
 
 </body>
 </html>
