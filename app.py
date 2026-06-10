@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
+import requests
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abc123'
@@ -12,6 +13,21 @@ class RegisterForm(FlaskForm):
     idade = StringField('idade', validators=[DataRequired()])
     telefone = StringField('telefone', validators=[DataRequired()])
     submit = SubmitField('CADASTRAR')
+
+#IMPLEMENTAÇÃO DA API PARA CONSUMO DE DADOS.
+@app.route('/cep')
+def cep():
+
+    url = "https://viacep.com.br/ws/01001000/json/"
+
+    response = requests.get(url)
+
+    dados = response.json()
+
+    return render_template(
+        'cep.html',
+        dados=dados
+    )
 
 # ABAIXO MOSTRO A ROTA DE CADASTRO
 
